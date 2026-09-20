@@ -1,36 +1,66 @@
 import Icon from "./icons/Icon";
+import CartItem from "./CartItem";
 
-function CartDrawer ({ viewCart , setViewCart }){
-return (
+
+function CartDrawer({ viewCart, setViewCart, items, onAdd, onDec, onRemove, subTotal }) {
+  return (
     <>
-    <div className={`cart-backdrop ${viewCart ? "is-visible" : ""}`}
-     onClick={()=> setViewCart(false)}>  
-    </div>
-    
-    <aside className={`cart-drawer ${viewCart ?  "is-open" : ""}`}>
+      <div
+        className={`cart-backdrop ${viewCart ? "is-visible" : ""}`}
+        onClick={() => setViewCart(false)}
+      ></div>
+
+      <aside className={`cart-drawer ${viewCart ? "is-open" : ""}`}>
         <div className="cart-drawer_header">
-            <h2>
-                <Icon id={"cart-icon"} />
-                Your Order 
-            </h2>
+          <h2>
+            <Icon id={"cart-icon"} />
+            Your Order
+          </h2>
 
-            <button type="button"
+          <button
+            type="button"
             className="icon-btn"
-            onClick={()=> setViewCart (false)}>
-                <Icon id="close-icon" />
-            </button>
+            onClick={() => setViewCart(false)}
+          >
+            <Icon id="close-icon" />
+          </button>
         </div>
-
-        <div className="cart-empty">
-            <Icon id="caet-icon" />
+        
+        {items.length <= 0 ? (
+          <div className="cart-empty">
+            <Icon id="cart-icon" />
             <p>You have no items selected yet</p>
             <span>Add a dish from the menu to get started</span>
-        </div>
+          </div>
+        ) : (
+          <>
+            <ul className="cart-lines">
+              {items.map(({ item, qty }) => (
+                <CartItem
+                  key={item.id}
+                  item={item}
+                  qty={qty}
+                  onAdd={onAdd}
+                  onDec={onDec}
+                  onRemove={onRemove}
+                />
+              ))}
+            </ul>
 
-    </aside>
-    
+            <div className="cart-drawer_footer">
+              <div className="cart-drawer_subtotal">
+                <span>Subtotal</span>
+                <strong>{subTotal} SAR</strong>
+              </div>
+              <p className="cart-drawer_hint">
+                Delivery Fee will be calculated in the next page
+              </p>
+            </div>
+          </>
+        )}
+      </aside>
     </>
-)
+  );
 }
 
-export default CartDrawer ;
+export default CartDrawer;
