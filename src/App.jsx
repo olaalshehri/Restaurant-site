@@ -4,11 +4,14 @@ import Hero from "./components/Hero";
 import Menu from "./components/Menu";
 import { menuItems } from "./data/menuItems";
 import CartDrawer from "./components/CartDrawer";
+import CheckOutPage from "./components/CheckOutPage";
 
 
 function App() {
   const [cart, setCart] = useState({});
   const [viewCart, setViewCart] = useState(false);
+  const [view, setView] = useState("menu");
+
 
   function addToCart(id) {
     setCart((prev) => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
@@ -50,17 +53,34 @@ function App() {
   const subTotal = cartItems.reduce(
     (sum, fooditem) => sum + fooditem.item.price * fooditem.qty,0);
 
+    function goToCheckout() {
+    setView("checkout");
+    setViewCart(false);
+  }
+
+  function goToMenu() {
+    setView("menu");
+    setCart({});
+  }
+
   return (
     <div className="app">
       <Header cartCount={cartCount} 
        setViewCart={setViewCart} />
 
       <main>
-        <Hero />
+       {view === "menu" && (
+          <>
 
+        <Hero />
         <Menu addToCart={addToCart} 
         decrementItem={decrementItem} 
         cart={cart} />
+
+         </>
+        )}
+
+        {view === "checkout" && <CheckOutPage onBack={goToMenu} />}
 
         <CartDrawer
           viewCart={viewCart}
@@ -70,6 +90,7 @@ function App() {
           onDec={decrementItem}
           onRemove={onRemove}
           subTotal={subTotal}
+          goToCheckout={goToCheckout}
         />
       </main>
     </div>

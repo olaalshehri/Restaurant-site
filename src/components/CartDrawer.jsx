@@ -1,8 +1,16 @@
 import Icon from "./icons/Icon";
 import CartItem from "./CartItem";
 
-
-function CartDrawer({ viewCart, setViewCart, items, onAdd, onDec, onRemove, subTotal }) {
+function CartDrawer({
+  viewCart,
+  setViewCart,
+  items,
+  onAdd,
+  onDec,
+  onRemove,
+  subTotal,
+  goToCheckout,
+}) {
   return (
     <>
       <div
@@ -25,7 +33,7 @@ function CartDrawer({ viewCart, setViewCart, items, onAdd, onDec, onRemove, subT
             <Icon id="close-icon" />
           </button>
         </div>
-        
+
         {items.length <= 0 ? (
           <div className="cart-empty">
             <Icon id="cart-icon" />
@@ -55,6 +63,12 @@ function CartDrawer({ viewCart, setViewCart, items, onAdd, onDec, onRemove, subT
               <p className="cart-drawer_hint">
                 Delivery Fee will be calculated in the next page
               </p>
+
+             <button
+                className="btn btn--primary btn--full"
+                onClick={() => goToCheckout()}>
+                Go To Checkout
+              </button>
             </div>
           </>
         )}
